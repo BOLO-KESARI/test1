@@ -16,77 +16,458 @@ Rural communities face significant challenges in accessing:
 ### 1.3 Solution Approach
 A unified, AI-powered platform that integrates multiple service domains through a centralized intelligence system, providing personalized recommendations and actionable insights to rural users through their preferred communication channels.
 
-## 2. System Architecture
+## 2. Complete End-to-End System Architecture
 
-### 2.1 High-Level Architecture
+### 2.1 System Overview
+
+The Rural Digital Empowerment Platform consists of **three main user-facing services** connected to a **unified backend system** with **AI/LLM capabilities** and **multiple integrated tools**.
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    USER ACCESS LAYER                        │
-├─────────────────┬─────────────────┬─────────────────────────┤
-│   Voice/IVR     │   Mobile App    │      Web Portal         │
-│   Assistant     │   (Android/iOS) │   (Responsive Web)      │
-└─────────────────┴─────────────────┴─────────────────────────┘
-                            │
-┌─────────────────────────────────────────────────────────────┐
-│                 CENTRAL ENTRY SYSTEM                        │
-│  • User Authentication & Identification                     │
-│  • Request Routing & Load Balancing                        │
-│  • Multi-language Processing                               │
-└─────────────────────────────────────────────────────────────┘
-                            │
-┌─────────────────────────────────────────────────────────────┐
-│                    AI BRAIN (CORE)                          │
-│  • Natural Language Processing                              │
-│  • Context Understanding                                    │
-│  • Decision Engine                                          │
-│  • Recommendation System                                    │
-└─────────────────────────────────────────────────────────────┘
-                            │
-┌─────────────────────────────────────────────────────────────┐
-│                 SERVICE DEPARTMENTS                         │
-├─────────────┬─────────────┬─────────────┬─────────────────┤
-│ Agriculture │ Healthcare  │ Skill & Job │ Startup &       │
-│ & Market    │ Services    │ Matching    │ Government      │
-│ Engine      │ Engine      │ Engine      │ Schemes Engine  │
-└─────────────┴─────────────┴─────────────┴─────────────────┘
-                            │
-┌─────────────────────────────────────────────────────────────┐
-│                 CENTRAL DATABASE SYSTEM                     │
-│  • User Profiles & Preferences                             │
-│  • Agricultural Data & Market Intelligence                 │
-│  • Healthcare Records & Provider Network                   │
-│  • Skill Profiles & Job Opportunities                     │
-│  • Government Schemes & Eligibility Matrix                │
-└─────────────────────────────────────────────────────────────┘
-                            │
-┌─────────────────────────────────────────────────────────────┐
-│                   SUPPORT SYSTEMS                           │
-├─────────────┬─────────────┬─────────────┬─────────────────┤
-│ Notification│ Weather &   │ Multi-Lang  │ Offline Support │
-│ System      │ Risk Alerts │ Processing  │ & Sync          │
-└─────────────┴─────────────┴─────────────┴─────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                           USER INTERACTION LAYER                               │
+├─────────────────────┬─────────────────────┬─────────────────────────────────────┤
+│                     │                     │                                     │
+│    📞 IVR SERVICE   │  📱 WEB & APP       │        📧 SMS SERVICE              │
+│                     │     SERVICE         │                                     │
+│  • Voice Interface  │  • Web Portal       │  • Critical Alerts                 │
+│  • Multi-language   │  • Mobile App       │  • Low-bandwidth                   │
+│  • DTMF Navigation  │  • Responsive UI    │  • Emergency Notifications         │
+│  • Speech-to-Text   │  • Offline Support  │  • OTP & Verification              │
+│                     │                     │                                     │
+└─────────────────────┴─────────────────────┴─────────────────────────────────────┘
+                                        │
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        UNIFIED BACKEND SYSTEM                                  │
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                      API GATEWAY & LOAD BALANCER                       │   │
+│  │  • Request Routing        • Authentication        • Rate Limiting      │   │
+│  │  • Protocol Translation  • Session Management    • Security Layer     │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                        │                                        │
+│                                        ▼                                        │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                         AI/LLM CORE ENGINE                              │   │
+│  │                                                                         │   │
+│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────┐ │   │
+│  │  │   NLP Engine    │  │ Context Manager │  │  Decision Engine        │ │   │
+│  │  │ • Speech-to-Text│  │ • User Sessions │  │ • Intent Recognition    │ │   │
+│  │  │ • Text-to-Speech│  │ • Conversation  │  │ • Recommendation Logic  │ │   │
+│  │  │ • Multi-language│  │   History       │  │ • Personalization       │ │   │
+│  │  │ • Intent Extract│  │ • User Profile  │  │ • Smart Routing         │ │   │
+│  │  └─────────────────┘  └─────────────────┘  └─────────────────────────┘ │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                        │                                        │
+│                                        ▼                                        │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                        TOOL INTEGRATION LAYER                           │   │
+│  │                                                                         │   │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │   │
+│  │  │  Database   │ │ Web Scraper │ │ External    │ │   Notification      │ │   │
+│  │  │   Tools     │ │    Tools    │ │ API Tools   │ │      Tools          │ │   │
+│  │  │             │ │             │ │             │ │                     │ │   │
+│  │  │ • User Data │ │ • Market    │ │ • Govt APIs │ │ • SMS Gateway       │ │   │
+│  │  │ • Crop Info │ │   Prices    │ │ • Weather   │ │ • Email Service     │ │   │
+│  │  │ • Health    │ │ • Job       │ │ • Payment   │ │ • Push Notifications│ │   │
+│  │  │   Records   │ │   Listings  │ │   Gateways  │ │ • Voice Calls       │ │   │
+│  │  │ • Schemes   │ │ • News &    │ │ • Corporate │ │ • WhatsApp API      │ │   │
+│  │  │   Database  │ │   Updates   │ │   Buyer APIs│ │                     │ │   │
+│  │  └─────────────┘ └─────────────┘ └─────────────┘ └─────────────────────┘ │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                        │                                        │
+│                                        ▼                                        │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                      SERVICE PROCESSING ENGINES                         │   │
+│  │                                                                         │   │
+│  │ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────────────┐ │   │
+│  │ │ Agriculture │ │ Healthcare  │ │ Skill & Job │ │ Startup & Govt      │ │   │
+│  │ │   Engine    │ │   Engine    │ │   Engine    │ │ Schemes Engine      │ │   │
+│  │ │             │ │             │ │             │ │                     │ │   │
+│  │ │ • Price     │ │ • Symptom   │ │ • Job       │ │ • Business          │ │   │
+│  │ │   Analysis  │ │   Analysis  │ │   Matching  │ │   Registration      │ │   │
+│  │ │ • Buyer     │ │ • Insurance │ │ • Skill     │ │ • IP Protection     │ │   │
+│  │ │   Matching  │ │   Schemes   │ │   Recommend │ │ • Funding Schemes   │ │   │
+│  │ │ • Profit    │ │ • Hospital  │ │ • Student-  │ │ • Startup Guidance  │ │   │
+│  │ │   Optimize  │ │   Finder    │ │   Startup   │ │ • Scheme Matching   │ │   │
+│  │ └─────────────┘ └─────────────┘ └─────────────┘ └─────────────────────┘ │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### 2.2 System Layers
+### 2.2 Detailed Service Architecture
 
-#### 2.2.1 User Access Layer
-- **Voice/IVR Assistant**: Toll-free number with multi-language support
-- **Mobile Application**: Lightweight Android/iOS app with offline capabilities
-- **Web Portal**: Responsive web interface for desktop and mobile browsers
-- **SMS Gateway**: For critical alerts and low-bandwidth communication
+#### 2.2.1 IVR Service (Voice Interface)
 
-#### 2.2.2 Central Entry System
-- **Authentication Service**: User identification via phone number/biometric
-- **Request Router**: Intelligent routing based on user intent and context
-- **Load Balancer**: Distributes requests across service instances
-- **API Gateway**: Unified entry point for all external integrations
+**How IVR Service Works:**
+```
+User Calls Toll-Free Number (1800-XXX-XXXX)
+                    ↓
+┌─────────────────────────────────────────────────────────────┐
+│                IVR Service Components                       │
+├─────────────────────────────────────────────────────────────┤
+│ 1. Call Reception & Language Selection                     │
+│    • "Press 1 for Hindi, 2 for Marathi, 3 for English"   │
+│    • Automatic language detection from speech             │
+│                                                            │
+│ 2. User Authentication                                     │
+│    • Phone number identification                           │
+│    • OTP verification for new users                       │
+│    • Voice biometric (optional)                           │
+│                                                            │
+│ 3. Voice Processing Pipeline                               │
+│    • Speech-to-Text conversion                             │
+│    • Natural Language Understanding                        │
+│    • Intent extraction and context building               │
+│                                                            │
+│ 4. Service Menu Navigation                                 │
+│    • "Say 'Farming' for agriculture services"            │
+│    • "Say 'Health' for medical assistance"               │
+│    • "Say 'Jobs' for employment opportunities"           │
+│    • "Say 'Business' for startup guidance"               │
+│                                                            │
+│ 5. Interactive Conversation                                │
+│    • Natural conversation with AI assistant               │
+│    • Context-aware responses                              │
+│    • Follow-up questions and clarifications              │
+│                                                            │
+│ 6. Response Delivery                                       │
+│    • Text-to-Speech in user's language                   │
+│    • SMS follow-up with detailed information             │
+│    • Call-back scheduling for complex queries            │
+└─────────────────────────────────────────────────────────────┘
+```
 
-#### 2.2.3 AI Brain (Core Intelligence)
-- **NLP Engine**: Processes voice and text inputs in multiple languages
-- **Context Manager**: Maintains user session and conversation history
-- **Decision Engine**: Makes intelligent recommendations based on user profile
-- **Learning System**: Continuously improves based on user interactions
+**IVR User Journey Example:**
+```
+📞 User: "Namaste, mera naam Ramesh hai. Mujhe tomato ki price jaanni hai."
+🤖 System: "Namaste Ramesh ji. Main aapko tomato ki sabse acchi price bata sakta hun. 
+           Aapke paas kitna tomato hai aur aap kahan se hain?"
+📞 User: "Mere paas 500 kg tomato hai, main Pune ke paas hun."
+🤖 System: "Ramesh ji, aaj Pune mein tomato ki rates:
+           - Blinkit: 34 rupaye kilo, transport 3 rupaye
+           - Local mandi: 22 rupaye kilo, transport 1 rupaye
+           - BigBasket: 31 rupaye kilo, transport 2.5 rupaye
+           
+           Sabse zyada profit Blinkit mein hai - 31 rupaye net per kilo.
+           Kya main aapko Blinkit se connect kar dun?"
+```
+
+#### 2.2.2 Web & App Service (Digital Interface)
+
+**How Web & App Service Works:**
+```
+User Opens App/Website
+           ↓
+┌─────────────────────────────────────────────────────────────┐
+│              Web & App Service Components                   │
+├─────────────────────────────────────────────────────────────┤
+│ 1. User Interface Layer                                    │
+│    • Responsive web design (mobile-first)                 │
+│    • Progressive Web App (PWA) capabilities               │
+│    • Native mobile apps (Android/iOS)                     │
+│    • Offline-first architecture                           │
+│                                                            │
+│ 2. Authentication & Onboarding                            │
+│    • Phone number + OTP login                             │
+│    • Profile creation wizard                              │
+│    • Preference setting (language, location, interests)   │
+│                                                            │
+│ 3. Dashboard & Navigation                                  │
+│    • Personalized home screen                             │
+│    • Quick access to frequently used services             │
+│    • Notification center                                  │
+│    • Search functionality                                 │
+│                                                            │
+│ 4. Service Modules                                         │
+│    • Agriculture: Price comparison, buyer connection       │
+│    • Healthcare: Symptom checker, hospital finder         │
+│    • Jobs: Skill assessment, job matching                 │
+│    • Startup: Business guidance, IP protection            │
+│    • Schemes: Eligibility checker, application tracker    │
+│                                                            │
+│ 5. Interactive Features                                    │
+│    • Chat interface with AI assistant                     │
+│    • Voice input capability                               │
+│    • Image upload (crop photos, documents)                │
+│    • Video consultation integration                        │
+│                                                            │
+│ 6. Data Synchronization                                    │
+│    • Real-time data sync when online                      │
+│    • Offline data storage and sync                        │
+│    • Cross-device synchronization                         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Web/App User Journey Example:**
+```
+📱 User opens app → Dashboard shows:
+   ┌─────────────────────────────────────────────────────┐
+   │ Welcome back, Ramesh! 🌾                           │
+   ├─────────────────────────────────────────────────────┤
+   │ 🔔 New Alert: Tomato prices up 15% today          │
+   │                                                     │
+   │ Quick Actions:                                      │
+   │ [Check Prices] [Find Buyers] [Weather] [Schemes]   │
+   │                                                     │
+   │ Today's Recommendations:                            │
+   │ • Sell tomatoes to Blinkit (₹34/kg)               │
+   │ • Apply for PM-KISAN scheme                        │
+   │ • Weather alert: Rain expected tomorrow            │
+   └─────────────────────────────────────────────────────┘
+```
+
+#### 2.2.3 SMS Service (Low-Bandwidth Support)
+
+**How SMS Service Works:**
+```
+┌─────────────────────────────────────────────────────────────┐
+│                 SMS Service Components                      │
+├─────────────────────────────────────────────────────────────┤
+│ 1. Critical Alerts                                         │
+│    • Weather warnings                                      │
+│    • Price alerts (significant changes)                    │
+│    • Scheme deadlines                                      │
+│    • Emergency health alerts                              │
+│                                                            │
+│ 2. Interactive SMS                                         │
+│    • Send "PRICE TOMATO" to get current rates            │
+│    • Send "SCHEME FARMER" to get eligible schemes         │
+│    • Send "HOSPITAL PUNE" to find nearby hospitals        │
+│                                                            │
+│ 3. Follow-up Communications                                │
+│    • Detailed information after IVR calls                 │
+│    • Application status updates                            │
+│    • Appointment confirmations                             │
+│                                                            │
+│ 4. OTP & Verification                                      │
+│    • Login verification codes                              │
+│    • Transaction confirmations                             │
+│    • Document verification status                          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 2.3 Backend System Architecture
+
+#### 2.3.1 API Gateway & Load Balancer
+
+**Function:** Central entry point for all user requests
+```
+┌─────────────────────────────────────────────────────────────┐
+│                API Gateway Responsibilities                 │
+├─────────────────────────────────────────────────────────────┤
+│ • Protocol Translation (Voice ↔ HTTP ↔ SMS)               │
+│ • Authentication & Authorization                            │
+│ • Request Routing to appropriate services                   │
+│ • Rate Limiting & DDoS Protection                          │
+│ • Request/Response Logging                                  │
+│ • Load Balancing across backend instances                   │
+│ • Circuit Breaker for fault tolerance                       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### 2.3.2 AI/LLM Core Engine
+
+**Function:** Central intelligence system processing all user interactions
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  AI/LLM Core Components                     │
+├─────────────────────────────────────────────────────────────┤
+│ NLP Engine:                                                │
+│ • Speech-to-Text (Google Cloud Speech API)                │
+│ • Text-to-Speech (Multi-language synthesis)               │
+│ • Language Detection & Translation                          │
+│ • Intent Classification                                     │
+│ • Entity Extraction                                         │
+│                                                            │
+│ Context Manager:                                           │
+│ • User session management                                  │
+│ • Conversation history tracking                            │
+│ • User profile and preferences                             │
+│ • Cross-channel context preservation                       │
+│                                                            │
+│ Decision Engine:                                           │
+│ • Intent-to-service routing                                │
+│ • Personalized recommendation generation                    │
+│ • Multi-criteria decision making                           │
+│ • Confidence scoring and fallback handling                 │
+│                                                            │
+│ Learning System:                                           │
+│ • User interaction pattern analysis                        │
+│ • Recommendation effectiveness tracking                     │
+│ • Continuous model improvement                             │
+│ • A/B testing for optimization                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### 2.3.3 Tool Integration Layer
+
+**Function:** Connects AI engine with data sources and external services
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Integrated Tools                         │
+├─────────────────────────────────────────────────────────────┤
+│ Database Tools:                                            │
+│ • PostgreSQL (structured data)                             │
+│ • MongoDB (unstructured data)                              │
+│ • Redis (caching and sessions)                             │
+│ • Elasticsearch (search and analytics)                     │
+│                                                            │
+│ Web Scraper Tools:                                         │
+│ • Market price scrapers (mandi websites)                   │
+│ • Job portal scrapers (Naukri, Indeed)                     │
+│ • News and update scrapers                                 │
+│ • Government website scrapers                              │
+│                                                            │
+│ External API Tools:                                        │
+│ • Government APIs (DigiLocker, Aadhaar, etc.)            │
+│ • Weather APIs (IMD, AccuWeather)                         │
+│ • Payment Gateway APIs (Razorpay, PayU)                   │
+│ • Corporate Buyer APIs (Blinkit, Flipkart)                │
+│ • Maps and Location APIs (Google Maps)                     │
+│                                                            │
+│ Notification Tools:                                        │
+│ • SMS Gateway (Twilio, TextLocal)                         │
+│ • Email Service (SendGrid, AWS SES)                       │
+│ • Push Notification Service (Firebase)                     │
+│ • Voice Call API (Twilio Voice)                           │
+│ • WhatsApp Business API                                    │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 2.4 Complete User Journey Flow
+
+#### 2.4.1 End-to-End Process Flow
+
+```
+User Request (Voice/App/SMS)
+            ↓
+API Gateway receives request
+            ↓
+Authentication & User Identification
+            ↓
+Request routed to AI/LLM Core Engine
+            ↓
+NLP Engine processes input (speech/text)
+            ↓
+Context Manager retrieves user profile & history
+            ↓
+Decision Engine determines intent & required services
+            ↓
+Tool Integration Layer fetches relevant data:
+  • Database queries for user-specific info
+  • Web scrapers for real-time market data
+  • External APIs for government schemes
+  • Weather APIs for agricultural advice
+            ↓
+Service Processing Engines generate recommendations:
+  • Agriculture Engine: Price comparison & buyer matching
+  • Healthcare Engine: Symptom analysis & insurance schemes
+  • Job Engine: Skill matching & opportunities
+  • Startup Engine: Business guidance & IP protection
+            ↓
+AI/LLM Core Engine compiles personalized response
+            ↓
+Response formatted for user's channel (voice/text/app)
+            ↓
+Notification Tools send follow-up information
+            ↓
+User receives comprehensive, actionable recommendations
+```
+
+#### 2.4.2 Real-World Example: Complete User Journey
+
+**Scenario:** Farmer Ramesh wants to sell tomatoes and needs health insurance information
+
+```
+📞 IVR Call:
+User: "Mujhe tomato bechna hai aur health insurance chahiye"
+
+🧠 AI Processing:
+• Intent: Agriculture (sell tomatoes) + Healthcare (insurance)
+• User Profile: Ramesh, Pune, 5-acre farm, family of 4
+• Context: Previous tomato sales, no current insurance
+
+🔧 Tool Integration:
+• Database: Ramesh's crop history, family details
+• Web Scraper: Current tomato prices across platforms
+• External APIs: Ayushman Bharat eligibility check
+• Weather API: Harvest timing recommendations
+
+⚙️ Service Processing:
+• Agriculture Engine: 
+  - Blinkit: ₹34/kg, BigBasket: ₹31/kg, Local: ₹22/kg
+  - Recommendation: Sell to Blinkit for ₹31/kg net profit
+• Healthcare Engine:
+  - Eligible for Ayushman Bharat (₹5L coverage)
+  - Nearest enrollment center: 2km away
+  - Required documents: Aadhaar, ration card
+
+🤖 AI Response Generation:
+"Ramesh ji, aapke tomato ke liye sabse accha rate Blinkit mein hai - 
+31 rupaye net per kilo. Aur aapka pura family Ayushman Bharat ke 
+liye eligible hai. 5 lakh tak ka free treatment mil sakta hai."
+
+📱 Follow-up Actions:
+• SMS with Blinkit contact details
+• Ayushman Bharat enrollment center address
+• Document checklist for insurance
+• Weather alert for optimal harvest timing
+```
+
+### 2.5 System Integration Points
+
+#### 2.5.1 Internal Service Communication
+```
+┌─────────────────────────────────────────────────────────────┐
+│              Internal Communication Flow                    │
+├─────────────────────────────────────────────────────────────┤
+│ IVR Service ←→ API Gateway ←→ AI Core Engine               │
+│ Web/App Service ←→ API Gateway ←→ AI Core Engine           │
+│ SMS Service ←→ API Gateway ←→ AI Core Engine               │
+│                                                            │
+│ AI Core Engine ←→ Tool Integration Layer                   │
+│ Tool Integration Layer ←→ Service Processing Engines       │
+│ Service Processing Engines ←→ Database Systems             │
+│                                                            │
+│ All services ←→ Notification Tools                         │
+│ All services ←→ Monitoring & Analytics                     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### 2.5.2 External System Integration
+```
+┌─────────────────────────────────────────────────────────────┐
+│               External Integration Points                   │
+├─────────────────────────────────────────────────────────────┤
+│ Government Systems:                                        │
+│ • Digital India Portal                                     │
+│ • Aadhaar Authentication                                   │
+│ • DigiLocker Integration                                   │
+│ • PM-KISAN Database                                        │
+│ • Ayushman Bharat Portal                                   │
+│                                                            │
+│ Corporate Partners:                                        │
+│ • Blinkit Procurement API                                  │
+│ • Flipkart Seller API                                     │
+│ • BigBasket Supplier Portal                                │
+│ • Amazon Fresh Integration                                 │
+│                                                            │
+│ Financial Services:                                        │
+│ • Bank APIs for payments                                   │
+│ • UPI Integration                                          │
+│ • Microfinance Institution APIs                            │
+│ • Insurance Company Portals                                │
+│                                                            │
+│ Communication Services:                                    │
+│ • Telecom Operator APIs                                    │
+│ • WhatsApp Business API                                    │
+│ • Email Service Providers                                  │
+│ • Voice Service Providers                                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+This comprehensive architecture ensures that users can seamlessly access all services through their preferred channel while the backend intelligently processes requests and provides personalized, actionable recommendations using AI/LLM capabilities and integrated tools.
 
 ## 3. Service Departments (Core Modules)
 
