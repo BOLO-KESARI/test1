@@ -2187,14 +2187,8 @@ graph TB
 
 ---
 
-**📞 Technical Contact**
-- 🏗️ Architecture Team: architects@ruralempowerment.in
-- 🔧 Development Team: dev@ruralempowerment.in
-- 📊 Data Team: data@ruralempowerment.in
-
----
-
 *© 2026 Rural Digital Empowerment Platform. Technical Documentation.*
 
 
 </div>
+
